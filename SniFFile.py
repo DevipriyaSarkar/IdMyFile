@@ -32,8 +32,8 @@ def main():
             abort(400, "Input file not passed")
 
         if input_file and allowed_file(file_name):
-            file_name = process_input_file(input_file)
-            return render_template('result.html', file_name=file_name)
+            file_name, error_list, res_data = process_input_file(input_file)
+            return render_template('result.html', file_name=file_name, error_list=error_list, res_data=res_data)
         else:
             abort(400, "Invalid file format. Please pass only plain text file input")
 
