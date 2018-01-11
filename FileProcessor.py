@@ -1,5 +1,6 @@
 from werkzeug.utils import secure_filename
 from models import LineError, FileDetails, SingleFileLine, CustomExt, CustomLang
+from Source3Helper import get_data_from_source3
 import re
 import Queue
 import threading
@@ -87,6 +88,7 @@ class Thread3(threading.Thread):            # thread class to fetch details (par
 
             # gets paradigm and other data of the host
             # data = getData(lang)
+            get_data_from_source3(lang)
             paradigm = ["sample paradigm 31", "sample paradigm 32"]
 
             cur_file_data = res_line_data_list[cur_line_num].my_file
