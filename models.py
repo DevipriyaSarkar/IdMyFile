@@ -8,7 +8,7 @@ class LineError:
         return "{0} : {1}".format(self.line_num, self.line_content)
 
 
-class MyFile:
+class FileDetails:
 
     def __init__(self, file_name=None, file_ext=None):
         self.file_name = file_name
@@ -25,7 +25,7 @@ class MyFile:
                                                                                       self.lang)
 
 
-class MyLine:
+class SingleFileLine:
 
     def __init__(self, line_num=-1, my_file=None):
         self.line_num = line_num

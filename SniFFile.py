@@ -3,22 +3,26 @@ from FileProcessor import process_input_file
 
 app = Flask(__name__)
 
-ALLOWED_EXTENSIONS = {'txt'}
+ALLOWED_EXTENSIONS = {'txt'}       # input file containing the list of file names and file types can only be text file
 
 
+# check if the passed file type is allowed
 def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
+# test URL
 @app.route('/test')
 def test():
     return 'SniFFile is working!'
 
 
+# URL to get the input file list and post the results
 @app.route('/', methods=['GET', 'POST'])
 def main():
     if request.method != "POST":
+        # show the form to submit input file
         return render_template('index.html')
     else:
         if 'input_file' not in request.files:
@@ -31,6 +35,7 @@ def main():
         if file_name == '':
             abort(400, "Input file not passed")
 
+        # file exists and allowed
         if input_file and allowed_file(file_name):
             file_name, error_list, res_data = process_input_file(input_file)
             return render_template('result.html', file_name=file_name, error_list=error_list, res_data=res_data)

@@ -1,17 +1,17 @@
 from werkzeug.utils import secure_filename
-from models import LineError, MyFile, MyLine, CustomExt, CustomLang
+from models import LineError, FileDetails, SingleFileLine, CustomExt, CustomLang
 import re
 import Queue
 import threading
 
 valid_file_regex = r"^([\w_\.]+)(\.)([\w]*)$"
-ext_queue1 = Queue.Queue()   # extensions
-ext_queue2 = Queue.Queue()   # extensions
-lang_queue = Queue.Queue()  # language.yml
-res_line_data_list = []         # final result
+ext_queue1 = Queue.Queue()   # queue to hold extensions as they are waiting to be processed by source 1
+ext_queue2 = Queue.Queue()   # queue to hold extensions as they are waiting to be processed by source 2
+lang_queue = Queue.Queue()      # queue to hold languages as they are waiting to be processed by source 3
+res_line_data_list = []         # final result list containing file details indexed by their line number
 
 
-class Thread1(threading.Thread):        # find data from language.yml
+class Thread1(threading.Thread):        # thread class to fetch details (language, category) from source 1
 
     def __init__(self, queue, out_queue):
         threading.Thread.__init__(self)
@@ -44,7 +44,7 @@ class Thread1(threading.Thread):        # find data from language.yml
             self.queue.task_done()
 
 
-class Thread2(threading.Thread):            # find data from file-extension website
+class Thread2(threading.Thread):            # thread class to fetch details (description, associated apps) from source 2
 
     def __init__(self, queue):
         threading.Thread.__init__(self)
@@ -72,7 +72,7 @@ class Thread2(threading.Thread):            # find data from file-extension webs
             self.queue.task_done()
 
 
-class Thread3(threading.Thread):            # find paradigm from scrapper
+class Thread3(threading.Thread):            # thread class to fetch details (paradigm) from source 3
 
     def __init__(self, queue):
         threading.Thread.__init__(self)
@@ -98,15 +98,20 @@ class Thread3(threading.Thread):            # find paradigm from scrapper
             self.queue.task_done()
 
 
+# method to process input file line by line
 def process_input_file(input_file):
     file_name = input_file.filename.strip()
     file_name = secure_filename(file_name)
 
-    error_list = []
+    error_list = []     # list to hold the lines that don't match the pattern "<file_name>.<file_ext>"
 
-    re_obj = re.compile(valid_file_regex)
-    line_count = 0
-    dummy_line = MyLine(line_count)
+    re_obj = re.compile(valid_file_regex)   # regex object for valid file pattern
+    line_count = 0      # count to hold the line number being processed
+
+    # adding details for a dummy line 0
+    # for easy processing
+    # later removed
+    dummy_line = SingleFileLine(line_count)
     res_line_data_list.append(dummy_line)
 
     # spawn a pool of threads, and pass them queue instance
@@ -125,7 +130,7 @@ def process_input_file(input_file):
         dt.setDaemon(True)
         dt.start()
 
-    # process input file lines one by one
+    # process lines one by one in the input file
     with input_file.stream as infile:
         for line in infile:
             line = line.rstrip()
@@ -133,15 +138,16 @@ def process_input_file(input_file):
             m = re_obj.match(line)
             if m is not None:
                 # line matches the valid pattern
-                # do something
                 cur_file_name = m.group(1)
                 cur_ext = m.group(3)
-                print cur_file_name + cur_ext
 
-                my_file = MyFile(cur_file_name, cur_ext)
-                my_line = MyLine(line_count, my_file)
+                # add the file information available now (file name and file extension) to result list
+                # later each thread adds the respective details that they fetch
+                my_file = FileDetails(cur_file_name, cur_ext)
+                my_line = SingleFileLine(line_count, my_file)
                 res_line_data_list.append(my_line)
 
+                # add current extension to the queue to fetch it's corresponding details
                 custom_ext = CustomExt(line_count, cur_ext)
 
                 # populate queue with data
@@ -158,7 +164,6 @@ def process_input_file(input_file):
     ext_queue2.join()
     lang_queue.join()
 
-    for d in res_line_data_list:
-        print d
+    del res_line_data_list[0]       # deleting the dummy line added before
 
     return file_name, error_list, res_line_data_list
