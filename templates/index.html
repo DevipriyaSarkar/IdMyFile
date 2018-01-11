@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>IdMyFile</title>
+	<style type="text/css">
+		.centered {
+			text-align: center;
+		}
+		.centered table {
+			margin: 0 auto;
+			text-align: left;
+		}
+		#note {
+			margin-top: 50px;
+			border: 1px solid black;
+		}
+		#footer {
+    		position: fixed;
+    		bottom: 0;
+    		width: 100%;
+		}
+	</style>
+</head>
+<body>
+	<div class="centered">
+		<h2>IdMyFile</h2>
+		<form method="post" enctype="multipart/form-data">
+		    <label>
+		    	Upload Input File &nbsp;&nbsp;
+		    	<input type="file" name="input_file" />
+		    </label>
+		    <br /><br />
+		    <input type="submit" value="Upload" />
+		</form>
+
+		<table id="note">
+			<tr>
+				<td>
+					<p>
+						<b>NOTE: </b>Input file should be a plain text file containing all files in the format
+						"&lt;file_name&gt;.&lt;file_extension&gt;" with each file in a new line.
+					</p>
+				</td>
+			</tr>
+		</table>
+
+		<div id="footer">
+			<h3>Project "Filetype Identification" for BlueOptima by Group 5 - Devipriya Sarkar and Akshata Nadkarni.</h3></h3>
+		</div>
+
+	</div>
+</body>
+</html>
