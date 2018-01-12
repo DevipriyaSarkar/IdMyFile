@@ -40,7 +40,7 @@ def get_data_from_source2(file_ext):
 
     # scrape the web page using BeautifulSoup
     page = urllib2.urlopen(req)
-    soup = BeautifulSoup(page, "html.parser")
+    soup = BeautifulSoup(page, "lxml")
     pattern = re.compile(file_ext, re.IGNORECASE)
     tags = soup.find('td', text=pattern).find_next_siblings('td')
 

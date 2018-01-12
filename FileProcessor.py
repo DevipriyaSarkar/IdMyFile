@@ -1,5 +1,6 @@
 from werkzeug.utils import secure_filename
 from models import LineError, FileDetails, SingleFileLine, CustomExt, CustomLang
+from Source1Helper import get_lang_cat
 from Source2Helper import get_desc_apps
 from Source3Helper import get_paradigm
 
@@ -38,10 +39,8 @@ class Thread1(threading.Thread):        # thread class to fetch details (languag
             file_ext = custom_file_ext.ext
             cur_line_num = custom_file_ext.line_num
 
-            # gets language and other data of the host
-            # lang_data = getData(file_ext)
-            lang_data = "sample language 1"
-            category_data = "sample category 1"
+            # gets language and category of the file extension
+            lang_data, category_data = get_lang_cat(file_ext)
 
             # place language data into out lang_queue
             custom_lang = CustomLang(cur_line_num, lang_data)

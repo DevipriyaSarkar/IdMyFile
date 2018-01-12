@@ -9,6 +9,8 @@ Given a language, returns its paradigm if known, else returns "Not Known"
 '''
 
 
+# performed only once when first line is processed
+# otherwise info taken from scraped data file
 def get_data_from_source3(lang):
     # source 3 url
     source_url = "https://medium.com/web-development-zone/a-complete-list-of-computer-programming-languages-1d8bc5a891f"
@@ -17,7 +19,7 @@ def get_data_from_source3(lang):
 
     # scrape the web page using BeautifulSoup
     page = urllib2.urlopen(req)
-    soup = BeautifulSoup(page, "html.parser")
+    soup = BeautifulSoup(page, "lxml")
 
     lang_dict = {}
     tag = soup.find('h3')
@@ -60,8 +62,7 @@ def get_paradigm(lang):
     if exists:
         with open(paradigm_file) as json_data:
             lang_dict = json.load(json_data)
-            res = lang_dict.get(lang, "Not Known")
+            return lang_dict.get(lang, "Not Known")
     else:
-        res = get_data_from_source3(lang)
+        return get_data_from_source3(lang)
 
-    return res

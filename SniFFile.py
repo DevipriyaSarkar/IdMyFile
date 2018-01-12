@@ -1,6 +1,6 @@
 from flask import Flask, request, render_template, abort
 from FileProcessor import process_input_file
-import urllib
+import urllib2
 
 
 app = Flask(__name__)
@@ -17,13 +17,13 @@ def allowed_file(filename):
 def is_connected():
     try:
         url = "https://www.google.com"
-        urllib.urlopen(url)
+        urllib2.urlopen(url)
         return True
     except:
         return False
 
 
-    # test URL
+# test URL
 @app.route('/test')
 def test():
     return 'SniFFile is working!'
