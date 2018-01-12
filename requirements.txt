@@ -1,0 +1,7 @@
+Flask==0.12.2
+Jinja2==2.10
+MarkupSafe==1.0
+Werkzeug==0.14.1
+beautifulsoup4==4.6.0
+PyYAML==3.12
+lxml==4.1.1
