@@ -1,5 +1,6 @@
 from werkzeug.utils import secure_filename
 from models import LineError, FileDetails, SingleFileLine, CustomExt, CustomLang
+from Source2Helper import get_desc_apps
 from Source3Helper import get_paradigm
 
 import re
@@ -69,10 +70,8 @@ class Thread2(threading.Thread):            # thread class to fetch details (des
             file_ext = custom_file_ext.ext
             cur_line_num = custom_file_ext.line_num
 
-            # gets other data of the host
-            # data = getData(file_ext)
-            desc_data = "sample description 2"
-            app_data = ["sample app 21", "sample app 22"]
+            # gets description and associated apps of the file extension
+            desc_data, app_data = get_desc_apps(file_ext)
 
             cur_file_data = res_line_data_list[cur_line_num].my_file
             # change cur_file_data

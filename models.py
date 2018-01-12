@@ -17,12 +17,12 @@ class FileDetails:
         self.category = None
         self.lang = None
         self.paradigm = None
-        self.associated_apps = []
+        self.associated_apps = None
 
     def __str__(self):
-        return "[FileName:{0}, FileExt:{1}, Desc:{2}, Category:{3}, Lang:{4}]".format(self.file_name, self.file_ext,
-                                                                                      self.desc, self.category,
-                                                                                      self.lang)
+        return "[FileName:{0}, FileExt:{1}, Desc:{2}, Category:{3}, Lang:{4}, Paradigm: {5}, Apps: {6}]"\
+            .format(self.file_name, self.file_ext, self.desc, self.category, self.lang,
+                    self.paradigm, self.associated_apps)
 
 
 class SingleFileLine:

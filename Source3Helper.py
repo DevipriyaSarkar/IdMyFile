@@ -15,7 +15,7 @@ def get_data_from_source3(lang):
     headers = {'User-Agent': 'Mozilla/5.0'}
     req = urllib2.Request(source_url, headers=headers)
 
-    # scrape the url using BeautifulSoup
+    # scrape the web page using BeautifulSoup
     page = urllib2.urlopen(req)
     soup = BeautifulSoup(page, "html.parser")
 
