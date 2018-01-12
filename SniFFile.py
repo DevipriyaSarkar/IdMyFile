@@ -1,8 +1,9 @@
 from flask import Flask, request, render_template, abort
 from FileProcessor import process_input_file
+import urllib
+
 
 app = Flask(__name__)
-
 ALLOWED_EXTENSIONS = {'txt'}       # input file containing the list of file names and file types can only be text file
 
 
@@ -12,7 +13,17 @@ def allowed_file(filename):
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
-# test URL
+# check for internet connectivity
+def is_connected():
+    try:
+        url = "https://www.google.com"
+        urllib.urlopen(url)
+        return True
+    except:
+        return False
+
+
+    # test URL
 @app.route('/test')
 def test():
     return 'SniFFile is working!'
@@ -34,6 +45,10 @@ def main():
         # submit a empty part without filename
         if file_name == '':
             abort(400, "Input file not passed")
+
+        # check for internet connectivity
+        if not is_connected():
+            abort(400, "No internet connection. Please connect to the internet and try again.")
 
         # file exists and allowed
         if input_file and allowed_file(file_name):

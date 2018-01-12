@@ -22,7 +22,7 @@
     <ul>
         {% for data in res_data %}
             <li>{{ data.line_num }} : {{ data.my_file.file_name }} : {{ data.my_file.file_ext }} : {{ data.my_file.desc }}
-                : {{ data.my_file.category }} : {{ data.my_file.lang }}
+                : {{ data.my_file.category }} : {{ data.my_file.lang }} : {{ data.my_file.paradigm }}
             </li>
         {% endfor %}
     </ul>

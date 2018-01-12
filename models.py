@@ -16,7 +16,7 @@ class FileDetails:
         self.desc = None
         self.category = None
         self.lang = None
-        self.paradigm = []
+        self.paradigm = None
         self.associated_apps = []
 
     def __str__(self):

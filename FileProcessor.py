@@ -1,9 +1,20 @@
 from werkzeug.utils import secure_filename
 from models import LineError, FileDetails, SingleFileLine, CustomExt, CustomLang
-from Source3Helper import get_data_from_source3
+from Source3Helper import get_paradigm
+
 import re
 import Queue
 import threading
+
+'''
+The multi-threading pattern used in the following logic is as follows:
+1. Create an instance of Queue.Queue() and then populate it with data.
+2. Pass that instance of populated data into the threading class that you created from inheriting from threading.Thread.
+Spawn a pool of daemon threads.
+3. Pull one item out of the queue at a time, and use that data inside of the thread, the run method, to do the work.
+4. After the work is done, send a signal to the queue with queue.task_done() that the task has been completed.
+5. Join on the queue, which really means to wait until the queue is empty, and then exit the main program. 
+'''
 
 valid_file_regex = r"^([\w_\.]+)(\.)([\w]*)$"
 ext_queue1 = Queue.Queue()   # queue to hold extensions as they are waiting to be processed by source 1
@@ -86,10 +97,8 @@ class Thread3(threading.Thread):            # thread class to fetch details (par
             lang = custom_file_lang.lang
             cur_line_num = custom_file_lang.line_num
 
-            # gets paradigm and other data of the host
-            # data = getData(lang)
-            get_data_from_source3(lang)
-            paradigm = ["sample paradigm 31", "sample paradigm 32"]
+            # gets paradigm of the language
+            paradigm = get_paradigm(lang)
 
             cur_file_data = res_line_data_list[cur_line_num].my_file
             # change cur_file_data
