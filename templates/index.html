@@ -1,53 +1,75 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<title>IdMyFile</title>
-	<style type="text/css">
-		.centered {
-			text-align: center;
-		}
-		.centered table {
-			margin: 0 auto;
-			text-align: left;
-		}
-		#note {
-			margin-top: 50px;
-			border: 1px solid black;
-		}
-		#footer {
-    		position: fixed;
-    		bottom: 0;
-    		width: 100%;
-		}
-	</style>
-</head>
-<body>
-	<div class="centered">
-		<h2>IdMyFile</h2>
-		<form method="post" enctype="multipart/form-data">
-		    <label>
-		    	Upload Input File &nbsp;&nbsp;
-		    	<input type="file" name="input_file" />
-		    </label>
-		    <br /><br />
-		    <input type="submit" value="Upload" />
-		</form>
+{% extends "base.html" %}
 
-		<table id="note">
-			<tr>
-				<td>
-					<p>
-						<b>NOTE: </b>Input file should be a plain text file containing all files in the format
-						"&lt;file_name&gt;.&lt;file_extension&gt;" with each file in a new line.
-					</p>
-				</td>
-			</tr>
-		</table>
+{% block header_body %}
+    <div class="nav-wrapper container">
+        <a id="logo-container" href="{{ url_for("main") }}" class="brand-logo">IdMyFile</a>
+    </div>
+{% endblock %}
 
-		<div id="footer">
-			<h3>Project "Filetype Identification" for BlueOptima by Group 5 - Devipriya Sarkar and Akshata Nadkarni.</h3></h3>
-		</div>
+{% block css_body %}
+    <style type="text/css">
+        body {
+            display: flex;
+            min-height: 100vh;
+            flex-direction: column;
+        }
+        main {
+            flex: 1 0 auto;
+        }
+    </style>
+{% endblock %}
 
-	</div>
-</body>
-</html>
+{% block main_body %}
+
+    <div class="section no-pad-bot" id="index-banner">
+        <div class="container">
+            <br /><br />
+            <h1 class="header center orange-text">Filetype Identification</h1>
+
+            <div class="row center">
+                <h5 class="header col s12 light">An app to identify, categorize and analyze multiple files
+                    based on their file extensions.<br />
+                    Upload a file that contains the list of file names and file extensions that you want to analyze.
+                </h5>
+            </div>
+
+            <div class="row center">
+                <form method="post" enctype="multipart/form-data">
+                    <div class="file-field input-field">
+                        <div class="btn">
+                            <span>Browse File</span>
+                            <input type="file" name="input_file">
+                        </div>
+                        <div class="file-path-wrapper">
+                            <input class="file-path validate" type="text">
+                        </div>
+                    </div>
+                    <button class="btn-large waves-effect waves-light orange" type="submit" name="action">Upload File
+                        <i class="material-icons right">send</i>
+                    </button>
+                </form>
+            </div>
+
+            <div class="row center">
+                <h6>Confused about the format of the input file?
+                    Check out the <a href="{{ url_for("show_sample_input_file") }}">Sample Input File</a>.
+                </h6>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block footer_body %}
+    <div class="container">
+        <div class="row">
+            <div class="col s2 m4">
+                <h5>NOTE</h5>
+            </div>
+            <div class="col s8 m8 offset-s1">
+                Input file should be a plain text file containing all files in the format
+                "&lt;file_name&gt;.&lt;file_extension&gt;" with each file in a new line.
+            </div>
+        </div>
+    </div>
+{% endblock %}

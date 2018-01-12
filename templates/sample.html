@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block header_body %}
+    <div class="nav-wrapper container">
+        <a id="logo-container" class="brand-logo center">Results</a>
+    </div>
+{% endblock %}
+
+{% block main_body %}
+
+    <h3>Uploaded file {{ file_name }}</h3>
+
+    <br /> <br /> <br />
+
+    <h2> Errors </h2>
+    <ul>
+        {% for e in error_list %}
+            <li>{{ e }}</li>
+        {% endfor %}
+    </ul>
+
+    <br /> <br /> <br />
+    <h2> Data </h2>
+    <ul>
+        {% for data in res_data %}
+            <li>{{ data.line_num }} : {{ data.my_file.file_name }} : {{ data.my_file.file_ext }} : {{ data.my_file.desc }}
+                : {{ data.my_file.category }} : {{ data.my_file.lang }} : {{ data.my_file.paradigm }}
+                : {{ data.my_file.associated_apps }}
+            </li>
+        {% endfor %}
+    </ul>
+
+{% endblock %}

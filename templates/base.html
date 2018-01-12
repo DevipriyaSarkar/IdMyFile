@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
+    <title>IdMyFile</title>
+
+    <!-- CSS  -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link type="text/css" rel="stylesheet" media="screen,projection" href="{{ url_for('static', filename='css/materialize.css') }}"/>
+    <link type="text/css" rel="stylesheet" media="screen,projection" href="{{ url_for('static', filename='css/style.css') }}" />
+    {% block css_body %}{% endblock %}
+</head>
+
+<body>
+
+<header>
+    <nav class="light-blue lighten-1" role="navigation">
+        {% block header_body %}{% endblock %}
+    </nav>
+</header>
+
+<main>
+    {% block main_body %}{% endblock %}
+    <!--  Scripts-->
+    <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script src={{ url_for('static', filename="js/materialize.js") }}></script>
+    <script src={{ url_for('static', filename="js/init.js") }}></script>
+
+</main>
+
+<footer class="page-footer orange">
+    {% block footer_body %}{% endblock %}
+    <div class="footer-copyright">
+        <div class="container">
+            Project "Filetype Identification" for BlueOptima by Group 5 - Devipriya Sarkar and Akshata Nadkarni.
+        </div>
+    </div>
+</footer>
+
+</body>
+</html>
