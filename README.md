@@ -45,12 +45,12 @@ Project "Filetype Identification" for BlueOptima by Group 5 - Devipriya Sarkar a
 # Screenshots
 
 * First Screen
-![First Screen](https://github.com/DevipriyaSarkar/SniFFile/blob/master/screenshots/image1.png?raw=true)
+![First Screen](screenshots/image1.png)
 
 
 * Browse Input File
-![Browse Input File](https://github.com/DevipriyaSarkar/SniFFile/blob/master/screenshots/image2.png?raw=true)
+![Browse Input File](screenshots/image2.png)
 
 
 * Result Screen
-![Result Screen](https://github.com/DevipriyaSarkar/SniFFile/blob/master/screenshots/image3.png?raw=true)
+![Result Screen](screenshots/image3.png)

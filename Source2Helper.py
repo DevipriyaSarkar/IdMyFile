@@ -41,12 +41,19 @@ def get_data_from_source2(file_ext):
     # scrape the web page using BeautifulSoup
     page = urllib2.urlopen(req)
     soup = BeautifulSoup(page, "lxml")
-    pattern = re.compile(file_ext, re.IGNORECASE)
-    tags = soup.find('td', text=pattern).find_next_siblings('td')
+    file_ext_regex = "^" + file_ext + "$"
+    pattern = re.compile(file_ext_regex, re.IGNORECASE)
+    td_tags = soup.find_all('td', text=pattern)
+    required_tags = None
+    for td_tag in td_tags:
+        sibling_list = td_tag.find_next_siblings('td')
+        if len(sibling_list) == 2:
+            required_tags = sibling_list
+            break
 
-    if tags is not None:
-        desc = tags[0].get_text()
-        associated_apps = tags[1].get_text()
+    if required_tags is not None:
+        desc = required_tags[0].get_text()
+        associated_apps = required_tags[1].get_text()
 
     return desc, associated_apps
 
