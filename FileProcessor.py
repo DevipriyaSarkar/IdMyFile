@@ -7,6 +7,7 @@ from Source3Helper import get_paradigm
 import re
 import Queue
 import threading
+import traceback
 
 '''
 The multi-threading pattern used in the following logic is as follows:
@@ -39,12 +40,18 @@ class Thread1(threading.Thread):        # thread class to fetch details (languag
             file_ext = custom_file_ext.ext
             cur_line_num = custom_file_ext.line_num
 
-            # gets language and category of the file extension
-            lang_data, category_data = get_lang_cat(file_ext)
+            lang_data = "Not Known"
+            category_data = "Not Known"
 
-            # place language data into out lang_queue
-            custom_lang = CustomLang(cur_line_num, lang_data)
-            self.out_queue.put(custom_lang)
+            # gets language and category of the file extension
+            try:
+                lang_data, category_data = get_lang_cat(file_ext)
+                # place language data into out lang_queue
+                custom_lang = CustomLang(cur_line_num, lang_data)
+                self.out_queue.put(custom_lang)
+            except Exception as e:
+                print e
+                traceback.print_exc()
 
             cur_file_data = res_line_data_list[cur_line_num].my_file
             # change cur_file_data
@@ -69,8 +76,15 @@ class Thread2(threading.Thread):            # thread class to fetch details (des
             file_ext = custom_file_ext.ext
             cur_line_num = custom_file_ext.line_num
 
-            # gets description and associated apps of the file extension
-            desc_data, app_data = get_desc_apps(file_ext)
+            desc_data = "Not Known"
+            app_data = "Not Known"
+
+            try:
+                # gets description and associated apps of the file extension
+                desc_data, app_data = get_desc_apps(file_ext)
+            except Exception as e:
+                print e
+                traceback.print_exc()
 
             cur_file_data = res_line_data_list[cur_line_num].my_file
             # change cur_file_data
@@ -95,13 +109,19 @@ class Thread3(threading.Thread):            # thread class to fetch details (par
             lang = custom_file_lang.lang
             cur_line_num = custom_file_lang.line_num
 
+            paradigm = "Not Known"
+
             # get category of this file, if programming file only then find paradigm
             # increases efficiency by not trying to find paradigm of non-programming files
             cur_file_data = res_line_data_list[cur_line_num].my_file
             if cur_file_data.category != "programming":
                 paradigm = "Not Applicable"
             else:
-                paradigm = get_paradigm(lang)
+                try:
+                    paradigm = get_paradigm(lang)
+                except Exception as e:
+                    print e
+                    traceback.print_exc()
 
             # change cur_file_data
             cur_file_data.paradigm = paradigm
@@ -126,22 +146,6 @@ def process_input_file(input_file):
     # later removed
     dummy_line = SingleFileLine(line_count)
     res_line_data_list.append(dummy_line)
-
-    # spawn a pool of threads, and pass them queue instance
-    for i in range(10):
-        t = Thread1(ext_queue1, lang_queue)
-        t.setDaemon(True)
-        t.start()
-
-    for i in range(10):
-        dt = Thread2(ext_queue2)
-        dt.setDaemon(True)
-        dt.start()
-
-    for i in range(10):
-        dt = Thread3(lang_queue)
-        dt.setDaemon(True)
-        dt.start()
 
     # process lines one by one in the input file
     with input_file.stream as infile:
@@ -172,6 +176,28 @@ def process_input_file(input_file):
                 le = LineError(line_count, line)
                 error_list.append(le)
                 res_line_data_list.append(0)
+
+    # spawn threads based on the number of lines in the input file
+    if line_count > 10:
+        num_threads = line_count / 10
+    else:
+        num_threads = 2
+
+    # spawn a pool of threads, and pass them queue instance
+    for i in range(num_threads):
+        t = Thread1(ext_queue1, lang_queue)
+        t.setDaemon(True)
+        t.start()
+
+    for i in range(num_threads):
+        dt = Thread2(ext_queue2)
+        dt.setDaemon(True)
+        dt.start()
+
+    for i in range(num_threads):
+        dt = Thread3(lang_queue)
+        dt.setDaemon(True)
+        dt.start()
 
     # wait on the queue until everything has been processed
     ext_queue1.join()
