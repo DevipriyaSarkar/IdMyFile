@@ -142,7 +142,16 @@ def process_input_file(input_file):
     # later removed
     dummy_file = FileDetails()
     dummy_line = SingleFileLine(line_count, dummy_file)
+    del res_line_data_list[:]       # clear result list first - important
     res_line_data_list.append(dummy_line)
+
+    # clear all queues first - important
+    with ext_queue1.mutex:
+        ext_queue1.queue.clear()
+    with ext_queue2.mutex:
+        ext_queue2.queue.clear()
+    with lang_queue.mutex:
+        lang_queue.queue.clear()
 
     # process lines one by one in the input file
     with input_file.stream as infile:
