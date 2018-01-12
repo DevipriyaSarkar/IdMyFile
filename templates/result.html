@@ -1,33 +1,81 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Result</title>
-</head>
-<body>
-<center>
-    <h3>Uploaded file {{ file_name }}</h3>
+{% extends "base.html" %}
 
-    <br /> <br /> <br />
+{% block header_body %}
+    <div class="nav-wrapper container">
+        <a id="logo-container" class="brand-logo center">Results</a>
+    </div>
+{% endblock %}
 
-    <h2> Errors </h2>
-    <ul>
-        {% for e in error_list %}
-            <li>{{ e }}</li>
-        {% endfor %}
-    </ul>
+{% block css_body %}
+    <style type="text/css">
+        #file-table {
+            margin: 10px;
+        }
+        .file-table-wrapper table, .file-table-wrapper td, .file-table-wrapper th {
+            border: solid;
+        }
+    </style>
+{% endblock %}
 
-    <br /> <br /> <br />
-    <h2> Data </h2>
-    <ul>
-        {% for data in res_data %}
-            <li>{{ data.line_num }} : {{ data.my_file.file_name }} : {{ data.my_file.file_ext }} : {{ data.my_file.desc }}
-                : {{ data.my_file.category }} : {{ data.my_file.lang }} : {{ data.my_file.paradigm }}
-                : {{ data.my_file.associated_apps }}
-            </li>
-        {% endfor %}
-    </ul>
+{% block main_body %}
 
-</center>
-</body>
-</html>
+    <div class="container">
+        <div class="row center">
+            <h5>Uploaded file <b>"{{ file_name }}"</b></h5>
+        </div>
+    </div>
+
+    <section id="result_table">
+        <div class="container">
+            <div class="row center">
+                <h5>File Information Table</h5>
+            </div>
+            <div class="row">
+                <table id="file-table" class="striped responsive-table file-table-wrapper">
+                    <thead>
+                        <tr>
+                            <th>Line No.</th>
+                            <th>File Name</th>
+                            <th>File Extension</th>
+                            <th>Short Description</th>
+                            <th>Category</th>
+                            <th>Language</th>
+                            <th>Programming Paradigm</th>
+                            <th>Associated Applications</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for data in res_data %}
+                            <tr>
+                                <td>{{ data.line_num }}</td>
+                                <td>{{ data.my_file.file_name }}</td>
+                                <td>{{ data.my_file.file_ext }}</td>
+                                <td>{{ data.my_file.desc }}</td>
+                                <td>{{ data.my_file.category }}</td>
+                                <td>{{ data.my_file.lang }}</td>
+                                <td>{{ data.my_file.paradigm }}</td>
+                                <td>{{ data.my_file.associated_apps }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <section id="error_list">
+        <div class="container">
+            <div class="row center">
+                <h5>Errors</h5>
+            </div>
+            <div class="row">
+                <ul class="collection">
+                    {% for e in error_list %}
+                        <li class="collection-item">Line {{ e }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </section>
+
+{% endblock %}

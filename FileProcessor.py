@@ -99,7 +99,7 @@ class Thread3(threading.Thread):            # thread class to fetch details (par
             # increases efficiency by not trying to find paradigm of non-programming files
             cur_file_data = res_line_data_list[cur_line_num].my_file
             if cur_file_data.category != "programming":
-                paradigm = "Not Known"
+                paradigm = "Not Applicable"
             else:
                 paradigm = get_paradigm(lang)
 

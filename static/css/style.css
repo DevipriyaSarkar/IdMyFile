@@ -12,3 +12,9 @@
 .icon-block .material-icons {
 	font-size: inherit;
 }
+#file-table {
+    margin: 10px;
+}
+.file-table-wrapper table, .file-table-wrapper td, .file-table-wrapper th {
+    border: solid;
+}
