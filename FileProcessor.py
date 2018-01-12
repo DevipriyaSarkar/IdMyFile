@@ -171,6 +171,7 @@ def process_input_file(input_file):
                 # line doesn't match the valid pattern
                 le = LineError(line_count, line)
                 error_list.append(le)
+                res_line_data_list.append(0)
 
     # wait on the queue until everything has been processed
     ext_queue1.join()
@@ -178,5 +179,6 @@ def process_input_file(input_file):
     lang_queue.join()
 
     del res_line_data_list[0]       # deleting the dummy line added before
+    res_list = [x for x in res_line_data_list if x != 0]
 
-    return file_name, error_list, res_line_data_list
+    return file_name, error_list, res_list
