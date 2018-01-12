@@ -1,6 +1,7 @@
 import urllib2
 import json
 import os
+import traceback
 from bs4 import BeautifulSoup
 
 '''
@@ -41,13 +42,17 @@ def get_data_from_source3(lang):
         cur_lang = cur_lang.replace("\xc2\xa0", " ")
         lang_dict[cur_lang] = cur_paradigm
 
-    # save the scraped dict to file "media/paradigm.json"
-    directory = os.path.join(os.path.dirname(__file__), "media")
-    paradigm_file = os.path.join(directory, "paradigm.json")
-    with open(paradigm_file, 'w+') as outfile:
-        json.dump(lang_dict, outfile)
-
-    return lang_dict.get(lang, "Not Known")      # return the required language paradigm if it exists
+    try:
+        # save the scraped dict to file "media/paradigm.json"
+        directory = os.path.join(os.path.dirname(__file__), "media")
+        paradigm_file = os.path.join(directory, "paradigm.json")
+        with open(paradigm_file, 'w+') as outfile:
+            json.dump(lang_dict, outfile)
+    except Exception as e:
+        print e
+        traceback.print_exc()
+    finally:
+        return lang_dict.get(lang, "Not Known")      # return the required language paradigm if it exists
 
 
 def get_paradigm(lang):

@@ -2,6 +2,7 @@ import yaml
 import urllib2
 import json
 import os
+import traceback
 
 '''
 Source 1: https://github.com/github/linguist/blob/master/lib/linguist/languages.yml
@@ -32,12 +33,6 @@ def get_data_from_source1(file_ext):
         for language, info in data_dict.iteritems():
             info["extensions"] = [x.lower() for x in info["extensions"]]
 
-        # save the dict to file "media/lang_info.json"
-        directory = os.path.join(os.path.dirname(__file__), "media")
-        lang_info_file = os.path.join(directory, "lang_info.json")
-        with open(lang_info_file, 'w+') as outfile:
-            json.dump(data_dict, outfile)
-
         # return current extension's language and category details in a dict
         # eg. {"Java": {"codemirror_mime_type": "text/x-java", "extensions": [".java"],
         #               "type": "programming", "language_id": 181}}
@@ -48,9 +43,19 @@ def get_data_from_source1(file_ext):
         for language, info in cur_lang_dict.iteritems():
             lang = language
             category = info.get("type", "Not Known")
-            break       # just in case extension is used in multiple languages, retrieve the first one and return
+            break  # just in case extension is used in multiple languages, retrieve the first one and return
 
-        return lang, category
+        try:
+            # save the dict to file "media/lang_info.json"
+            directory = os.path.join(os.path.dirname(__file__), "media")
+            lang_info_file = os.path.join(directory, "lang_info.json")
+            with open(lang_info_file, 'w+') as outfile:
+                json.dump(data_dict, outfile)
+        except Exception as e:
+            print e
+            traceback.print_exc()
+        finally:
+            return lang, category
 
     except yaml.YAMLError as exc:
         print exc
