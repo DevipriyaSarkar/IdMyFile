@@ -40,24 +40,21 @@ class Thread1(threading.Thread):        # thread class to fetch details (languag
             file_ext = custom_file_ext.ext
             cur_line_num = custom_file_ext.line_num
 
-            lang_data = "Not Known"
-            category_data = "Not Known"
-
             # gets language and category of the file extension
             try:
                 lang_data, category_data = get_lang_cat(file_ext)
                 # place language data into out lang_queue
                 custom_lang = CustomLang(cur_line_num, lang_data)
                 self.out_queue.put(custom_lang)
+
+                cur_file_data = res_line_data_list[cur_line_num].my_file
+                # change cur_file_data
+                cur_file_data.lang = lang_data
+                cur_file_data.category = category_data
+                res_line_data_list[cur_line_num].my_file = cur_file_data
             except Exception as e:
                 print e
                 traceback.print_exc()
-
-            cur_file_data = res_line_data_list[cur_line_num].my_file
-            # change cur_file_data
-            cur_file_data.lang = lang_data
-            cur_file_data.category = category_data
-            res_line_data_list[cur_line_num].my_file = cur_file_data
 
             # signals to ext_queue job is done
             self.queue.task_done()
@@ -76,21 +73,19 @@ class Thread2(threading.Thread):            # thread class to fetch details (des
             file_ext = custom_file_ext.ext
             cur_line_num = custom_file_ext.line_num
 
-            desc_data = "Not Known"
-            app_data = "Not Known"
-
             try:
                 # gets description and associated apps of the file extension
                 desc_data, app_data = get_desc_apps(file_ext)
+
+                cur_file_data = res_line_data_list[cur_line_num].my_file
+                # change cur_file_data
+                cur_file_data.desc = desc_data
+                cur_file_data.associated_apps = app_data
+                res_line_data_list[cur_line_num].my_file = cur_file_data
+
             except Exception as e:
                 print e
                 traceback.print_exc()
-
-            cur_file_data = res_line_data_list[cur_line_num].my_file
-            # change cur_file_data
-            cur_file_data.desc = desc_data
-            cur_file_data.associated_apps = app_data
-            res_line_data_list[cur_line_num].my_file = cur_file_data
 
             # signals to queue job is done
             self.queue.task_done()
@@ -109,23 +104,24 @@ class Thread3(threading.Thread):            # thread class to fetch details (par
             lang = custom_file_lang.lang
             cur_line_num = custom_file_lang.line_num
 
-            paradigm = "Not Known"
-
             # get category of this file, if programming file only then find paradigm
             # increases efficiency by not trying to find paradigm of non-programming files
             cur_file_data = res_line_data_list[cur_line_num].my_file
             if cur_file_data.category != "programming":
                 paradigm = "Not Applicable"
+                # change cur_file_data
+                cur_file_data.paradigm = paradigm
+                res_line_data_list[cur_line_num].my_file = cur_file_data
             else:
                 try:
                     paradigm = get_paradigm(lang)
+
+                    # change cur_file_data
+                    cur_file_data.paradigm = paradigm
+                    res_line_data_list[cur_line_num].my_file = cur_file_data
                 except Exception as e:
                     print e
                     traceback.print_exc()
-
-            # change cur_file_data
-            cur_file_data.paradigm = paradigm
-            res_line_data_list[cur_line_num].my_file = cur_file_data
 
             # signals to queue job is done
             self.queue.task_done()
@@ -144,7 +140,8 @@ def process_input_file(input_file):
     # adding details for a dummy line 0
     # for easy processing
     # later removed
-    dummy_line = SingleFileLine(line_count)
+    dummy_file = FileDetails()
+    dummy_line = SingleFileLine(line_count, dummy_file)
     res_line_data_list.append(dummy_line)
 
     # process lines one by one in the input file
@@ -204,7 +201,8 @@ def process_input_file(input_file):
     ext_queue2.join()
     lang_queue.join()
 
-    del res_line_data_list[0]       # deleting the dummy line added before
+    if res_line_data_list:
+        del res_line_data_list[0]       # deleting the dummy line added before
     res_list = [x for x in res_line_data_list if x != 0]
 
     return file_name, error_list, res_list
