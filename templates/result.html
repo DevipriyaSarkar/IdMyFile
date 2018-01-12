@@ -31,34 +31,40 @@
                 <h5>File Information Table</h5>
             </div>
             <div class="row">
-                <table id="file-table" class="striped responsive-table file-table-wrapper">
-                    <thead>
-                        <tr>
-                            <th>Line No.</th>
-                            <th>File Name</th>
-                            <th>File Extension</th>
-                            <th>Short Description</th>
-                            <th>Category</th>
-                            <th>Language</th>
-                            <th>Programming Paradigm</th>
-                            <th>Associated Applications</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for data in res_data %}
+                {% if res_data %}
+                    <table id="file-table" class="striped responsive-table file-table-wrapper">
+                        <thead>
                             <tr>
-                                <td>{{ data.line_num }}</td>
-                                <td>{{ data.my_file.file_name }}</td>
-                                <td>{{ data.my_file.file_ext }}</td>
-                                <td>{{ data.my_file.desc }}</td>
-                                <td>{{ data.my_file.category }}</td>
-                                <td>{{ data.my_file.lang }}</td>
-                                <td>{{ data.my_file.paradigm }}</td>
-                                <td>{{ data.my_file.associated_apps }}</td>
+                                <th>Line No.</th>
+                                <th>File Name</th>
+                                <th>File Extension</th>
+                                <th>Short Description</th>
+                                <th>Category</th>
+                                <th>Language</th>
+                                <th>Programming Paradigm</th>
+                                <th>Associated Applications</th>
                             </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            {% for data in res_data %}
+                                <tr>
+                                    <td>{{ data.line_num }}</td>
+                                    <td>{{ data.my_file.file_name }}</td>
+                                    <td>{{ data.my_file.file_ext }}</td>
+                                    <td>{{ data.my_file.desc }}</td>
+                                    <td>{{ data.my_file.category }}</td>
+                                    <td>{{ data.my_file.lang }}</td>
+                                    <td>{{ data.my_file.paradigm }}</td>
+                                    <td>{{ data.my_file.associated_apps }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                {% else %}
+                    <h6 class="header center blue-grey-text">
+                        No files to show.
+                    </h6>
+                {% endif %}
             </div>
         </div>
     </section>
@@ -69,11 +75,17 @@
                 <h5>Errors</h5>
             </div>
             <div class="row">
-                <ul class="collection">
-                    {% for e in error_list %}
-                        <li class="collection-item">Line {{ e }}</li>
-                    {% endfor %}
-                </ul>
+                {% if error_list %}
+                    <ul class="collection">
+                        {% for e in error_list %}
+                            <li class="collection-item">Line {{ e }}</li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <h6 class="header center blue-grey-text">
+                        Yayy! No error lines to show.
+                    </h6>
+                {% endif %}
             </div>
         </div>
     </section>
