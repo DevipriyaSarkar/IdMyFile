@@ -39,7 +39,7 @@ Project "Filetype Identification" for BlueOptima by Group 5 - Devipriya Sarkar a
         > Note: By default, [flask](http://flask.pocoo.org/) runs on port 5000.
     6. Upload a "plain text file" containing the list of file names and extensions in the format ```<file_name>.<file_extension>``` .
        A sample test file ```sample_input_file.txt``` is there in the project directory for reference.
-    7. The result page shows a table with file information and the invalid lines in the input file are showed in the "Invalid Lines" section.
+    7. The result page shows a table with file information and the invalid lines in the input file are shown in the "Invalid Lines" section.
         > Quick Information: The regular expression used for matching the valid file name is ```^([\w_\.]+)(\.)([\w]*)$```.
         
 # Screenshots

@@ -1,6 +1,7 @@
 from flask import Flask, request, render_template, abort
 from FileProcessor import process_input_file
 import urllib2
+import time
 
 
 app = Flask(__name__)
@@ -52,8 +53,12 @@ def main():
 
         # file exists and allowed
         if input_file and allowed_file(file_name):
+            start = time.clock()
             file_name, error_list, res_data = process_input_file(input_file)
-            return render_template('result.html', file_name=file_name, error_list=error_list, res_data=res_data)
+            time_taken = time.clock() - start
+            time_taken = round(time_taken, 2)
+            return render_template('result.html', file_name=file_name,
+                                   error_list=error_list, res_data=res_data, time_taken=time_taken)
         else:
             abort(400, "Invalid file format. Please pass only plain text file input")
 
