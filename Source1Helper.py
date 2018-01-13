@@ -48,6 +48,8 @@ def get_data_from_source1(file_ext):
         try:
             # save the dict to file "media/lang_info.json"
             directory = os.path.join(os.path.dirname(__file__), "media")
+            if not os.path.exists(directory):
+                os.makedirs(directory)
             lang_info_file = os.path.join(directory, "lang_info.json")
             with open(lang_info_file, 'w+') as outfile:
                 json.dump(data_dict, outfile)

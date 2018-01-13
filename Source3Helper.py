@@ -45,6 +45,8 @@ def get_data_from_source3(lang):
     try:
         # save the scraped dict to file "media/paradigm.json"
         directory = os.path.join(os.path.dirname(__file__), "media")
+        if not os.path.exists(directory):
+            os.makedirs(directory)
         paradigm_file = os.path.join(directory, "paradigm.json")
         with open(paradigm_file, 'w+') as outfile:
             json.dump(lang_dict, outfile)
