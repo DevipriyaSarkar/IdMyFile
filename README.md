@@ -22,19 +22,29 @@ Project "Filetype Identification" for BlueOptima by Group 5 - Devipriya Sarkar a
     1. Make sure python 2.7 is installed on your system.
     2. Un-zip the directory.
     3. Install all the packages in ```requirements.txt```.
-       To install using pip, run ```pip install -r requirements.txt``` from the project directory.
+           To install using pip, run ```pip install -r requirements.txt``` from the project directory.
+           > Check if you have pip installed by using ```pip -V``` on your command line.
+           > If you do not have [pip](https://pip.pypa.io/en/stable/installing/) installed, install pip by securely downloading [get-pip.py](https://bootstrap.pypa.io/get-pip.py). Then run the command ```python get-pip.py``` .
+    
     4. To run the application,
-            
-                    $ export FLASK_APP=IdMyFile.py               
-                    $ flask run         
-                        * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)                 
-            
-        or
-            
-                    $ export FLASK_APP=IdMyFile.py          
-                    $ python -m flask run           
-                        * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)  
-                     
+            On Linux,
+                
+                        $ export FLASK_APP=IdMyFile.py               
+                        $ flask run         
+                            * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)                 
+                
+            or
+                
+                        $ export FLASK_APP=IdMyFile.py          
+                        $ python -m flask run           
+                            * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)  
+           
+           On Windows cmd (not PowerShell),
+           
+                        $ set FLASK_APP=IdMyFile.py               
+                        $ flask run         
+                            * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
+    
     5. Go to [http://127.0.0.1:5000/](http://127.0.0.1:5000/) or [http://localhost:5000/](http://127.0.0.1:5000/) to check the web app.
         > Note: By default, [flask](http://flask.pocoo.org/) runs on port 5000.
     6. Upload a "plain text file" containing the list of file names and extensions in the format ```<file_name>.<file_extension>``` .
