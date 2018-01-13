@@ -28,7 +28,8 @@ Project "Filetype Identification" for BlueOptima by Group 5 - Devipriya Sarkar a
     > If you do not have [pip](https://pip.pypa.io/en/stable/installing/) installed, install pip by securely downloading [get-pip.py](https://bootstrap.pypa.io/get-pip.py). Then run the command    
     ```python get-pip.py``` .
     
-    4. To run the application,
+    4. To run the application from the project directory.	
+    
         On Linux,
 
                     $ export FLASK_APP=IdMyFile.py               
